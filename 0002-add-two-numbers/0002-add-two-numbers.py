@@ -10,51 +10,38 @@ class Solution(object):
         :type l2: Optional[ListNode]
         :rtype: Optional[ListNode]
         """
-        remainder = 0
-        nums = []
+        num = l1.val + l2.val
+        remainder = num / 10
+
+        head = ListNode(num % 10, None)
+        last_node = head
+
+        l1 = l1.next
+        l2 = l2.next
 
         while True:
-            num = l1.val + l2.val + remainder
-            remainder = num / 10
-            num = num % 10
-            nums.insert(0, num)
-
-            if l1.next == None or l2.next == None:
+            if l1 == None and l2 == None:
                 break
-            
-            l1 = l1.next
-            l2 = l2.next
 
-        if l1.next != None:
-            while True:
+            num1 = 0
+            if l1 != None:
+                num1 = l1.val
                 l1 = l1.next
-                num = l1.val + remainder
-                remainder = num / 10
-                num = num % 10
-                nums.insert(0, num)
 
-                if l1.next == None:
-                    break
-
-        if l2.next != None:
-            while True:
+            num2 = 0
+            if l2 != None:
+                num2 = l2.val
                 l2 = l2.next
-                num = l2.val + remainder
-                remainder = num / 10
-                num = num % 10
-                nums.insert(0, num)
 
-                if l2.next == None:
-                    break
-        
+            num = num1 + num2 + remainder
+            remainder = num / 10
+
+            new_node = ListNode(num % 10, None)
+            last_node.next = new_node
+            last_node = new_node
+
         if remainder > 0:
-            nums.insert(0, remainder)
+            new_node = ListNode(remainder, None)
+            last_node.next = new_node
 
-        ans = ListNode(nums[0], None)
-        i = 1
-
-        while i < len(nums):
-            ans = ListNode(nums[i], ans)
-            i += 1
-        
-        return ans
+        return head
